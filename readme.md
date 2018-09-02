@@ -49,13 +49,13 @@ If you want to train from scratch - use load_model_ID = 0. This is also further 
 
 Note that there is no need to split your data into train/val/test in advance - this will be done automatically and randomly when first running the model (this is controlled in dataset.py).  
 For your convenience, we supplied sample files in the res folder for format only (to keep them small, they do not contain many cpgs or samples, so don't expect this to train very well). You should adhere to the format according to these files. To supply your file names, as well as other settings, use conf.py. 
-Below is an example of what yo  u would have to supply, both in run.py and in conf.py.
+Below is an example of what you would have to supply, both in run.py and in conf.py.
 The load_model_ID parameter corresponds to which of the models from the paper you would like to use as pre-training (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
 Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
 Before running:
 
-* The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
+* The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
 * Make sure to have the following driectories in place:
     * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, it should be placed under:  ch3_e_blind
     * A logs directory.
