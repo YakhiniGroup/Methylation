@@ -24,6 +24,7 @@ Tensorflow 1.4+
 To predict methylation levels, use predict.py. Inside, you will find a designated area with a few settings that enable you to specify the input files (such as the gene-expression measurements file). 
 For your convenience, we supplied sample files in the res folder for format only (to keep them small, they do not contain many cpgs or samples, so don't expect this to train very well). It does contain all the genes. If you don't have gene-expression levels for some of them - you can still use the models, but we can't guarantee best results. Below is an example of what you would have to supply. This is also the default in predict.py.
 The load_model_ID parameter corresponds to which of the models from the paper you would like to use for the prediction (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
+Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
 Before running:
 
@@ -50,6 +51,7 @@ Note that there is no need to split your data into train/val/test in advance - t
 For your convenience, we supplied sample files in the res folder. You should adhere to the format according to these files. To supply your file names, as well as other settings, use conf.py. 
 Below is an example of what yo  u would have to supply, both in run.py and in conf.py.
 The load_model_ID parameter corresponds to which of the models from the paper you would like to use as pre-training (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
+Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
 Before running:
 
