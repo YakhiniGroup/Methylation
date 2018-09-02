@@ -22,7 +22,7 @@ In case you encounter any issues - feel free to contact us at alonal at cs.techn
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 1
+load_model_ID = 2
 filename_sequence = 'probeToOneHotAll_sample_mini.csv'
 filename_expression = 'e_sample_mini.csv'
 filename_dist = 'd_sample_mini.csv'
