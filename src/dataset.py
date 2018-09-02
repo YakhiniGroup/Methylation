@@ -468,7 +468,8 @@ def read_data_sets(filename_sequence,
                                is_prediction=is_prediction, expression_sample_names=expression_sample_names, cpg_id_names=cpg_id_names)
     # blind ch3 (ch3 = val/test idx, e = train idx)
     validation_ch3_blind = Dataset(features_img, features_other, features_dist,
-                                     validation_probes_idx, train_subjects_idx, labels=data_labels, labels_raw=data_labels_raw, is_prediction=is_prediction)
+                                     validation_probes_idx, train_subjects_idx, labels=data_labels, labels_raw=data_labels_raw, is_prediction=is_prediction,
+                                   expression_sample_names=expression_sample_names, cpg_id_names=cpg_id_names)
     test_ch3_blind = Dataset(features_img, features_other, features_dist,
                             test_probes_idx, train_subjects_idx, labels=data_labels, labels_raw=data_labels_raw, is_prediction=is_prediction,
                              expression_sample_names=expression_sample_names, cpg_id_names=cpg_id_names)

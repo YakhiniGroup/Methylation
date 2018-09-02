@@ -517,7 +517,7 @@ class Model():
                         tf.reset_default_graph()
                         return
 
-                    if ii % 200 == 0:
+                    if ii % 50 == 0:
                         # TRAIN EVAL
                         ambient_seq_batch, gene_exp_batch, dist_batch, labels_batch, _, _, _ = self.train.next_batch(
                             self.Conf.batch_size)

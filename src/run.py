@@ -22,14 +22,14 @@ special characters.
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 2  #see explanation above
-test_time = True   # when you want to test on the test set, which was automatically generated for each of the files you supplied in your conf settings.
+load_model_ID = 0  #see explanation above
+test_time = False   # when you want to test on the test set, which was automatically generated for each of the files you supplied in your conf settings.
 save_models = False # choose true if you want to save the model while training (will be saved automatically if performance is good or if 90 minutes have passed - see model.py)
+sample = True # will use the sample configuration under conf.py -> ConfSample
 
 ####  YOUR SETTINGS - END ####
 
 
-sample = True
 if sample:
     Conf = ConfSample
 

@@ -77,9 +77,9 @@ class ConfSample(Conf):
 
 
 
-    validation_portion_subjects = 0.1
-    validation_portion_probes = 0.2
-    train_portion_probes = 0.5
+    validation_portion_subjects = 0.5
+    validation_portion_probes = 0.5
+    train_portion_probes = 0.7
 
     probeToOneHotPrefixAll = '../res/probeToOneHotAll_sample' + str(suffix)  # + str(numSurrounding)
     numBases = 5 #4
