@@ -212,17 +212,24 @@ class Model():
             with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as var_scope:
                 name = 'dist_gene_attn_%d' % i
 
-                inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes/6), activation=None, name='fully_conn_gene_attn_dist',
+                if self.load_model == 1:
+                    inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes/2), activation=None, name='fully_conn_gene_attn_dist',
                                                kernel_regularizer=None, bias_initializer=self.init_xavier, kernel_initializer=self.init_xavier)
+                else:
+                    inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes / 6),
+                                                        activation=None, name='fully_conn_gene_attn_dist',
+                                                        kernel_regularizer=None, bias_initializer=self.init_xavier,
+                                                        kernel_initializer=self.init_xavier)
                 inputs_dist_layer = tf.layers.batch_normalization(inputs_dist_layer, name=name)
-                inputs_dist_layer = self.activation(inputs_dist_layer)
+                if not self.load_model == 1:
+                    inputs_dist_layer = self.activation(inputs_dist_layer)
                 inputs_dist_layer2 = tf.layers.dense(inputs=inputs_dist_layer, units=self.n_genes, activation=None,
                                                name='fully_conn_gene_attn_dist_2',
                                                kernel_regularizer=None, bias_initializer=self.init_xavier,
                                                kernel_initializer=self.init_xavier)
                 inputs_dist_layer2 = tf.layers.batch_normalization(inputs_dist_layer2, name=name+"_2")
-
-                inputs_dist_layer2 = self.activation(inputs_dist_layer2)
+                if not self.load_model == 1:
+                    inputs_dist_layer2 = self.activation(inputs_dist_layer2)
                 inputs_dist_layer2 = tf.nn.softmax(inputs_dist_layer2)
 
             return inputs_dist_layer2
