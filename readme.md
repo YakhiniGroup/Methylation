@@ -10,7 +10,7 @@ With this program you can:
 ## Getting Started
 
 Below you will find explanations, including examples, for each of the options above. 
-For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out folder. To obtain them, please feel free to contact us at levyalona at gmail (the files are ~2-4GB). In the near future we will have a direct download link.  
+For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out folder, as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
 
 ### Prerequisites 
 
@@ -29,6 +29,7 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 Before running:
 
 * The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
+* Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
 * Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (obtained from us). 
 
 
@@ -56,6 +57,7 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 Before running:
 
 * The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
+* Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
 * Make sure to have the following driectories in place:
     * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, it should be placed under:  ch3_e_blind
     * A logs directory.
