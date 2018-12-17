@@ -11,13 +11,9 @@ transfer learning, use run.py).
 Modify the settings below according to your needs:
  (1) load_model = 1/2/3 if your CpG is within a 2K of one of the genes in the run_example file, choose 1, if within 10K choose 2 etc. according to paper. If
 you're not sure - either contact us (alonal at cs.technion.ac.il) or simply use the most general model - 3). 
-As the weights are large files (~1G) please contact us and we will send them directly to you. In the near future they 
-will be available directly for download.
+The pre-trained weights can be download them from the link provided in the README file.
  (2) Provide the names of your files, which should be placed under the res directory. You will see there a sample 
      of the required files and their format. Note that you only need 3 out of the 4 (probeToOneHot, e and d).
-The output will be saved in the out dir when done. You might want to run on a handful of examples before running on many,
-just to verify the output.
-In case you encounter any issues - feel free to contact us at alonal at cs.technion.ac.il or levyalona at gmail. 
 '''
 
 ####  YOUR SETTINGS - START ####
@@ -26,7 +22,7 @@ load_model_ID = 3
 filename_sequence = 'probeToOneHotAll_sample_mini.csv'
 filename_expression = 'e_sample_mini.csv'
 filename_dist = 'd_sample_mini.csv'
-run_example = True  # use this if you want to see an example run (will use the filenames in ConfSample, as seen below, which are also the default above)
+run_example = True  # use this if you want to see a sample run on a mini data-set (note - these do not reflect the results of the full dataset)
 
 ####  YOUR SETTINGS - END ####
 

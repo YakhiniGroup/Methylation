@@ -13,18 +13,17 @@ You have two options:
 (2) Train with an existing model (transfer learning) using load_model = 1/2/3 according to your needs (if your CpG 
 is within a 2K of one of the genes in the run_example file, choose 1, if within 10K choose 2 etc. according to paper. If
 you're not sure - either contact us (alonal at cs.technion.ac.il) or simply use the most general model - 3). 
-As the weights are large files (~1G) please contact us and we will send them directly to you. In the near future they 
-will be available directly for download.
+The pre-trained weights can be download them from the link provided in the README file.
 Note - the model's naming convention for checkpoint purposes is long (deliberately so that you know which parameters it includes). However,
-TensorFlow doesn't recognize these long names when loading them, so before loading - rename the relevant checkpoint files to a short name, with no
-special characters. 
+TensorFlow doesn't recognize long names when loading them, so before loading yours, make sure to rename them to a shorter
+version, with no special characters. 
 '''
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 3  #see explanation above
+load_model_ID = 0  # see explanation above
 test_time = False   # when you want to test on the test set, which was automatically generated for each of the files you supplied in your conf settings.
-save_models = False # choose true if you want to save the model while training (will be saved automatically if performance is good or if 90 minutes have passed - see model.py)
+save_models = False  # choose true if you want to save the model while training (will be saved automatically if performance is good or if 90 minutes have passed - see model.py)
 sample = True  # will use the sample configuration under conf.py -> ConfSample
 
 ####  YOUR SETTINGS - END ####
