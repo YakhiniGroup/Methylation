@@ -569,7 +569,7 @@ class Model():
                         corr = spearmanr(pred, labels_batch)
 
                         if corr[0] > 0.6 and corr[0] > max_val_correl:
-                            self.scatter_plot(pred, labels_batch, counter, 'val_ch3_e_blind')
+                            # self.scatter_plot(pred, labels_batch, counter, 'val_ch3_e_blind')
                             if self.save_models:
                                 save_path = saver.save(sess,
                                                        "../out/ch3_e_blind/m_%s_%d_ch3_e_cor_%.2f_mae_%.2f.ckpt" % (
@@ -608,7 +608,7 @@ class Model():
                         self.print_step(False, validation_ch3_blind_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "CH3___________")
 
                         if corr[0] > 0.3 and corr[0] > max_ch3_blind_correl:
-                            self.scatter_plot(pred, labels_batch, counter, 'val_ch3_blind')
+                            # self.scatter_plot(pred, labels_batch, counter, 'val_ch3_blind')
                             if self.save_models:
                                 save_path = saver.save(sess, "../out/ch3_blind/model_%s_%d_ch3_blind.ckpt" % (
                                     self.modelID, counter))
@@ -631,7 +631,7 @@ class Model():
                         self.print_step(False, validation_e_blind_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "E___________")
 
                         if corr[0] > 0.3 and corr[0] > max_e_blind_correl:
-                            self.scatter_plot(pred, labels_batch, counter, 'val_e_blind')
+                            # self.scatter_plot(pred, labels_batch, counter, 'val_e_blind')
                             if self.save_models:
                                 save_path = saver.save(sess, "../out/e_blind/model_%s_%d_e_blind.ckpt" % (
                                     self.modelID, counter))
@@ -678,8 +678,8 @@ class Model():
                 avg_cor_sampled = np.mean(samples_corr)
                 if avg_cor_sampled > 0.3:
                     print("autoencoder avg passes %.2f" %avg_cor_sampled)
-                    self.scatter_plot(pred[s], gene_exp_batch[s], counter,
-                                      validation_type)
+                    # self.scatter_plot(pred[s], gene_exp_batch[s], counter,
+                    #                   validation_type)
                     # save_path = saver.save(sess, "../out/autoencoder.ckpt")
 
         else:
