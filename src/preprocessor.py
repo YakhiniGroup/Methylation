@@ -3,11 +3,11 @@ import tensorflow as tf
 import pickle as pkl
 import numpy as np
 import pandas as pd
-from src.conf import Conf, ConfSample
-from src.helperMethods import *
+from conf import Conf, ConfSample
+from helperMethods import *
 import os
-from src.distances import *
-from src.distances import *
+from distances import *
+from distances import *
 
 dirInterims = '../res/interims/'
 dirProcessed = '../res/processed/'

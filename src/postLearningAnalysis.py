@@ -3,7 +3,7 @@ from matplotlib.text import TextPath
 from matplotlib.patches import PathPatch
 from matplotlib.font_manager import FontProperties
 from Bio import SeqIO
-from src.helperMethods import *
+from helperMethods import *
 import random
 from sklearn import preprocessing
 import numpy as np

@@ -1,12 +1,12 @@
 import os
-from src.helperMethods import *
+from helperMethods import *
 from scipy.stats import spearmanr
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
-from src.conf import Conf, ConfSample
+from conf import Conf, ConfSample
 from collections import deque
 import pandas as pd
 import math
@@ -431,8 +431,8 @@ class Model():
             seen_rows_seq = set([])
             seen_rows_gene = set([])
             n_batches = math.ceil(self.test.num_examples / batch_size)
-            print("If you're testing a trained model and want the attention output files, make sure to remove previously created attention"
-                  " files, otherwise results will be appended to them.")
+            # print("If you're testing a trained model and want the attention output files, make sure to remove previously created attention"
+            #       " files, otherwise results will be appended to them.")
 
             for i in range(n_batches):
                 if i % 5 == 1:
@@ -491,7 +491,7 @@ class Model():
             validation_e_blind_writer = tf.summary.FileWriter('../logs/val_e_blind/model_%s' % self.modelID)
             if not self.load_model:
                 sess.run(tf.global_variables_initializer())
-                print(sess.run(tf.report_uninitialized_variables()))
+                # print(sess.run(tf.report_uninitialized_variables()))
 
             mse_queue_val = deque([])
             cor_queue_val = deque([])
@@ -553,17 +553,17 @@ class Model():
                         dn = sess.run(dist_attn, feed_dict={inputs_dist: dist_batch})
                         cn = sess.run(cnn_attn, feed_dict={inputs_cnn: ambient_seq_batch})
                         gn = sess.run(gene_attn, feed_dict={inputs_ff: gene_exp_batch})
-                        print("cn\n-------\n", cn)
-                        print(np.max(cn, axis=1))
-                        print(np.argmax(cn, axis=1))
-                        print("dn\n-------\n", dn)
-                        print(np.max(dn, axis=1))
-                        print(np.argmax(dn, axis=1))
-                        print("gn\n-------\n", gn)
-                        print(np.max(gn, axis=1))
-                        print(np.argmax(gn, axis=1))
-                        print("dist_input_argmax\n-------\n")
-                        print(np.argmax(dist_batch, axis=1))
+                        # print("cn\n-------\n", cn)
+                        # print(np.max(cn, axis=1))
+                        # print(np.argmax(cn, axis=1))
+                        # print("dn\n-------\n", dn)
+                        # print(np.max(dn, axis=1))
+                        # print(np.argmax(dn, axis=1))
+                        # print("gn\n-------\n", gn)
+                        # print(np.max(gn, axis=1))
+                        # print(np.argmax(gn, axis=1))
+                        # print("dist_input_argmax\n-------\n")
+                        # print(np.argmax(dist_batch, axis=1))
                         self.print_step(False, val_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "VAL___________")
 
                         corr = spearmanr(pred, labels_batch)
@@ -670,7 +670,7 @@ class Model():
             rand_range = np.arange(0, self.Conf.batch_size * 2)
             random_batch_samples_idx = np.random.choice(rand_range, 10)
             corr = spearmanr(pred[random_batch_samples_idx[0]], gene_exp_batch[random_batch_samples_idx[0]])
-            print(validation_type+"________________________corr: ", corr[0], "loss", batch_cost)
+            print(validation_type+" corr: ", corr[0], "loss", batch_cost)
             if corr[0] > 0.3:
                 samples_corr = []
                 for s in random_batch_samples_idx:
@@ -685,7 +685,7 @@ class Model():
         else:
             corr = spearmanr(pred, labels_batch)
             if validation_type != '':
-                print(validation_type+"corr: ", corr[0], "loss", batch_cost)
+                print(validation_type+" corr: ", corr[0], "loss", batch_cost)
             extSummary = tf.Summary()
             extSummary.value.add(tag='correl', simple_value=corr[0])
             extSummary.value.add(tag='correl_pval', simple_value=corr[1])

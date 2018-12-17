@@ -15,10 +15,13 @@ For prediction purposes, as well as for training with one of our pre-trained mod
 ### Prerequisites 
 
 Requires:
-Python 3.5.6 (or 3.5 should do).
 
-Tensorflow 1.4+ 
-You will also need to install pandas.
+Python 3.5.6 (or 3.5 should do). 
+
+Pandas (pip3 install pandas)
+
+Tensorflow 1.4+ (pip3 install tensorflow)
+
 
 ## (1) Prediction
 

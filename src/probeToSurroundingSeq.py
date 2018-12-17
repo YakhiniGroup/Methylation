@@ -1,10 +1,10 @@
-from src.conf import Conf
+from conf import Conf
 import numpy as np
 from Bio import SeqIO
 from Bio.Alphabet import generic_dna
 from Bio.Seq import Seq
 import pandas as pd
-from src.conf import Conf
+from conf import Conf
 
 ### MUST USE PYTHON 2!! FOR BIOPYTHON... ###
 

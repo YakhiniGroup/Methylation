@@ -1,6 +1,6 @@
 from sklearn import preprocessing
 import itertools
-from src.helperMethods import *
+from helperMethods import *
 import random
 import pandas as pd
 import numpy as np

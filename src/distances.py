@@ -3,8 +3,8 @@ import os
 from Bio import SeqIO
 # from Bio.Graphics import BasicChromosome
 import pandas as pd
-from src.helperMethods import *
-from src.conf import Conf
+from helperMethods import *
+from conf import Conf
 import numpy as np
 import random
 import csv

@@ -1,7 +1,7 @@
 import random
-from src.conf import Conf, ConfSample
-import src.dataset as Dataset
-from src.model import Model
+from conf import Conf, ConfSample
+import dataset as Dataset
+from model import Model
 import pandas as pd
 import tensorflow as tf
 
@@ -22,11 +22,11 @@ In case you encounter any issues - feel free to contact us at alonal at cs.techn
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 2
+load_model_ID = 3
 filename_sequence = 'probeToOneHotAll_sample_mini.csv'
 filename_expression = 'e_sample_mini.csv'
 filename_dist = 'd_sample_mini.csv'
-run_example = False  # use this if you want to see an example run (will use the filenames in ConfSample, as seen below, which are also the default above)
+run_example = True  # use this if you want to see an example run (will use the filenames in ConfSample, as seen below, which are also the default above)
 
 ####  YOUR SETTINGS - END ####
 

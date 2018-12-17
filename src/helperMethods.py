@@ -5,7 +5,7 @@ from scipy import stats
 import pandas as pd
 import csv
 import numpy as np
-from src.conf import Conf, ConfSample
+from conf import Conf, ConfSample
 
 def save_obj(obj, name, directory='../res/'):
     with open(directory + name + '.pkl', 'wb') as f:
