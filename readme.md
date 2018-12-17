@@ -17,7 +17,8 @@ For prediction purposes, as well as for training with one of our pre-trained mod
 Requires:
 Python 3.5.6 (or 3.5 should do).
 
-Tensorflow 1.4+  
+Tensorflow 1.4+ 
+You will also need to install pandas.
 
 ## (1) Prediction
 
@@ -29,7 +30,7 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 Before running:
 
 * The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
-* Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
+* Depending on your system or interpreter, you may need to mark the src directory as Sources Root, or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
 * Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (obtained from us). 
 
 
