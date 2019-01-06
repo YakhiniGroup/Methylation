@@ -33,8 +33,8 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 
 Before running:
 
-* The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
-* Depending on your system or interpreter, you may need to mark the src directory as Sources Root, or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
+* If running from terminal - the project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
+* If running from an IDE (e.g. PyCharm), then you may need to mark the src directory as Sources Root (right click on src -> mark directory as -> Source Root) or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
 * Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (obtained from us). 
 
 
@@ -61,8 +61,8 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 
 Before running:
 
-* The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
-* Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
+* If running from terminal - the project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
+* If running from an IDE (e.g. PyCharm), then you may need to mark the src directory as Sources Root (right click on src -> mark directory as -> Source Root) or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
 * Make sure to have the following driectories in place:
     * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, it should be placed under:  ch3_e_blind
     * A logs directory.
