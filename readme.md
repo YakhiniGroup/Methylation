@@ -10,7 +10,8 @@ With this program you can:
 ## Getting Started
 
 Below you will find explanations, including examples, for each of the options above. 
-For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out folder, as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
+For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out folder, as described below. 
+Please contact us to obtain the weights (levyalona at gmail).  
 
 ### Prerequisites 
 
