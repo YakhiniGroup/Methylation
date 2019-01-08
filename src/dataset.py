@@ -147,11 +147,12 @@ class Dataset():
 
         start = self._index_in_epoch
         # Shuffle for the first epoch
-        if self._epochs_completed == 0 and start == 0 and shuffle: # won't shuffle if is_prediction
-            np.random.shuffle(self._subjects_idx)
-            np.random.shuffle(self._probes_idx)
+        if self._epochs_completed == 0 and start == 0: # won't shuffle if is_prediction
+            if shuffle:
+                np.random.shuffle(self._subjects_idx)
+                np.random.shuffle(self._probes_idx)
             # Get the shuffled full data
-        self.tuples_generator = self.create_tuples_generator() # required also for predictions as it creates the tuples of (CpG, sample_ID) (e.g. [probe_123, subject_1])
+            self.tuples_generator = self.create_tuples_generator() # required also for predictions as it creates the tuples of (CpG, sample_ID) (e.g. [probe_123, subject_1])
             # Go to the next epoch
         if start + batch_size > self._num_examples:
             # Finished epoch
