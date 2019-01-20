@@ -26,7 +26,7 @@ Tensorflow 1.4+ (pip3 install tensorflow)
 ## (1) Prediction
 
 To predict methylation levels, use predict.py. Inside, you will find a designated area with a few settings that enable you to specify the input files (such as the gene-expression measurements file). 
-For your convenience, we supplied sample files in the res folder. You should adhere to the format according to these files. Below is an example of the settings you would have to modify. This is also the default in predict.py.
+For your convenience, we supplied sample files in the res folder (NOTE - these files contain little data and are for demonstration purposes only). You should adhere to the format according to these files. Below is an example of the settings you would have to modify. This is also the default in predict.py.
 The load_model_ID parameter corresponds to which of the models from the paper you would like to use for the prediction (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
 Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
