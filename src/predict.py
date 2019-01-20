@@ -24,7 +24,7 @@ load_model_ID = 1
 filename_sequence = 'probeToOneHotAll.csv'
 filename_expression = 'TCGA_E_final_transposed.csv'
 filename_dist = 'distances.csv'
-run_example = True  # use this if you want to see a sample run on a mini data-set (note - these do not reflect the results of the full dataset)
+run_example = True  # use this if you want to see a sample run on a mini data-set (NOTE - these do not reflect the results of the full dataset)
 
 ####  YOUR SETTINGS - END ####
 

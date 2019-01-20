@@ -24,6 +24,9 @@ version, with no special characters.
 # If you have already used run.py before, and wish to run on NEW data, make sure to remove the pkl files created under
 # the res folder (train/va/test probes and subjects)
 
+# NOTE - sample training is intended for a quick and low-memory / disk space demonstration only - it is not
+# sufficient to train a full model.
+
 load_model_ID = 1  # see explanation above
 test_time = False  # when you're ready for testing after using save_models below (our code handles the random splitting of the data into train/val/test)
 save_models = False  # if you want to save the model while training (saved upon validation improvement or > 90 minutes)
