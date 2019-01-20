@@ -30,7 +30,7 @@ version, with no special characters.
 load_model_ID = 1  # see explanation above
 test_time = False  # when you're ready for testing after using save_models below (our code handles the random splitting of the data into train/val/test)
 save_models = False  # if you want to save the model while training (saved upon validation improvement or > 90 minutes)
-sample = True  # will use the sample configuration under conf.py -> ConfSample
+sample = True  # will run on a mini dataset for demonstration purposes (see note above)
 
 ####  YOUR SETTINGS - END ####
 

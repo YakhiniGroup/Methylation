@@ -20,11 +20,14 @@ folder.
 
 ####  YOUR SETTINGS - START ####
 
+# NOTE - sample training is intended for a quick and low-memory / disk space demonstration only - it is not
+# sufficient to train a full model.
+
 load_model_ID = 1
 filename_sequence = 'probeToOneHotAll.csv'
 filename_expression = 'TCGA_E_final_transposed.csv'
 filename_dist = 'distances.csv'
-run_example = True  # use this if you want to see a sample run on a mini data-set (NOTE - these do not reflect the results of the full dataset)
+run_example = True  # will run on a mini dataset for demonstration purposes (see note above)
 
 ####  YOUR SETTINGS - END ####
 
