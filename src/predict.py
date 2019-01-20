@@ -14,6 +14,8 @@ you're not sure - either contact us (alonal at cs.technion.ac.il) or simply use 
 The pre-trained weights can be download them from the link provided in the README file.
  (2) Provide the names of your files, which should be placed under the res directory. You will see there a sample 
      of the required files and their format. Note that you only need 3 out of the 4 (probeToOneHot, e and d).
+Note: if you used run.py before predict.py, make sure to remove the train/test/val pkl files generated under the res
+folder.
 '''
 
 ####  YOUR SETTINGS - START ####
