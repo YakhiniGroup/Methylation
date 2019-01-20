@@ -36,12 +36,10 @@ class Dataset():
             raise TypeError('Invalid image dtype %r, expected uint8 or float32' %
                             dtype)
 
-        #TODO -vfix validation and test as described on paper (add params: train_subjects, rest_subjects, full_probes, rest_probes, train_probes=None)
         self._num_examples = len(probes_idx)*len(subjects_idx)
-        # print("num examples (depends on train test val)", self.num_examples)
         # Convert shape from [num examples, rows, columns, depth]
         # to [num examples, rows*columns] (assuming depth == 1)
-        if reshape:  #in my case this won't be activated, I changed to False by default
+        if reshape:  # irrelevant for our task (legacy from images with 3 channels)
             assert images.shape[3] == 1
             images = images.reshape(images.shape[0],
                                     images.shape[1] * images.shape[2])
@@ -78,9 +76,6 @@ class Dataset():
     @property
     def dist(self):
         return self._dist
-    # @property
-    # def labels(self):
-    #     return self._raw_labels  # want it to return the raw labels matrix
 
     @property
     def labels_idx(self):
@@ -171,15 +166,13 @@ class Dataset():
                 expression_rest_part = [self.other[j] for [_, j] in tuples_idx_rest_part]
                 dist_rest_part = [self.dist[i] for [i, _] in tuples_idx_rest_part]
 
-                # assert len(sequences_rest_part)==len(expression_rest_part)==len(labels_rest_part), "length of rest part for labels not equal rest images and other"
             # Shuffle the full data (for the new part that we will take)
             if shuffle:
                 np.random.shuffle(self._subjects_idx)
                 np.random.shuffle(self._probes_idx)
                 # Get the shuffled full data
                 self.tuples_generator = self.create_tuples_generator()
-                # self._images = self.images
-                # self._other = self.other
+
             if testing or self.is_prediction:
                 # don't start a new epoch, we're done testing/predicting
                 return sequences_rest_part, expression_rest_part, dist_rest_part, labels_rest_part, labels_rest_part_raw,\
@@ -264,16 +257,7 @@ def read_data_sets(filename_sequence,
 
 
     print("reading data")
-    # data = dataFull.iloc[:, 1:].as_matrix()  # shape [num_samples, num_features]
-    # try:
-    #     print("attempting to read pre-saved data in as_matrix format")
-    #     data_sequence_full = load_obj(filename_sequence.split('.')[0], directory)
-    #     data_expression_full = load_obj(filename_expression.split('.')[0], directory)
-        # data_dist_full = load_obj(filename_dist.split('.')[0], directory)
-        # data_labels = load_obj(filename_labels.split('.')[0], directory)
-        # print("found pre-saved data in as_matrix format")
-    # except:
-    #     print("none found, reading csv and creating as_matrix")
+
     data_sequence_full = pd.read_csv(directory + filename_sequence)
     data_expression_full = pd.read_csv(directory + filename_expression)
     data_dist_full = pd.read_csv(directory + filename_dist)
@@ -295,7 +279,7 @@ def read_data_sets(filename_sequence,
         if x == 0:
             return x
         elif abs(1 / float(x)) <= window:
-            return 1*np.sign(x)  #acts as an amplifier for the gene expr. data - if the gene is within the above window - tf.multiply gets the +/- value of the gene exp (depends if it's before or after CpG). Otherwise - gets 0.
+            return 1*np.sign(x)  # acts as an amplifier for the gene expr. data - if the gene is within the above window - tf.multiply gets the +/- value of the gene exp (depends if it's before or after CpG). Otherwise - gets 0.
             # return x
         else:
             return 0
@@ -344,17 +328,11 @@ def read_data_sets(filename_sequence,
         probes_kept = []
         tot_n_probes = 0
         for index, row in data_dist.iterrows():
-            # if 1 in row.values or -1 in row.values:
-            #     continue
-            # else:
             tot_n_probes += 1
-            # if 1 not in row.values and -1 not in row.values: # both pos and negative
             if 1 not in row.values:
-            # if not any(n > 0 for n in row.values): #any positive value, in case I want to change 1 to an actual distance metric
                 probes_to_remove.append(index)
             else:
                 probes_kept.append(index)
-        print("num probes removed = %d out of %d" %(len(probes_to_remove), tot_n_probes))
         data_img = data_img.drop(probes_to_remove)
         data_dist = data_dist.drop(probes_to_remove)
         if not is_prediction:
@@ -384,7 +362,7 @@ def read_data_sets(filename_sequence,
         data_sequence_full, data_labels, data_dist_full = drop_probes_with_no_pos_dist_in_window(data_sequence_full, data_labels, data_dist_full)
 
     # The other two are marked out here because the sacling above already returned them in an np.array format
-    data_sequence_full = data_sequence_full.as_matrix()  #TODO: replace .as_matrix with .values as it will be deprecated in the future
+    data_sequence_full = data_sequence_full.as_matrix()  # in the future replace .as_matrix with .values as it will be deprecated in the future
     # data_expression_full = data_expression_full.as_matrix()
     data_dist_full = data_dist_full.as_matrix()
     if not is_prediction:

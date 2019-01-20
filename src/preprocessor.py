@@ -10,7 +10,7 @@ from distances import *
 from distances import *
 
 dirInterims = '../res/interims/'
-dirProcessed = '../res/processed/'
+dirProcessed = '../res/processed_healthy/'
 
 def createListOfProbesInData():
     data = pd.read_csv(Conf.dfMethyl)
@@ -34,16 +34,6 @@ def createProbeDict():
                 chrToProbeList[chr] = [probe]
 
     save_obj(chrToProbeList, "chrToProbeList")
-
-#
-# def save_obj(obj, name):
-#     with open('../res/' + name + '.pkl', 'wb') as f:
-#         pkl.dump(obj, f)
-#
-#
-# def load_obj(name):
-#     with open('../res/' + name + '.pkl', 'rb') as f:
-#         return pkl.load(f)
 
 
 def _seqToOneHotMtrx(seq):
@@ -104,16 +94,6 @@ def transposeE(filename_E='TCGA_E_final', filename_CH3='TCGA_CH3_final', probeDa
     _assertAllDataInOrder(df_CH3, probeData, df_E, transposedE=True)
 
     df_E.to_csv('../res/'+filename_E+'_transposed.csv')
-    # df_CH3.to_csv('../res/'+filename_CH3+'_t.csv', index=False)
-
-
-#TODO:remove
-# def createFullDataCSV():
-#     left_E_t = pd.read_csv('../res/TCGA_E_t.csv')
-#     right_CH3_t = pd.read_csv('../res/TCGA_CH3_t.csv')
-#     merged = pd.merge(left_E_t, right_CH3_t, on='subject')
-#     print(merged.head())
-#     merged.to_csv('../res/fullData.csv', index=False)
 
 
 def createSampleData(filename_E='TCGA_E_final_transposed', filename_CH3='TCGA_CH3_final', withDistances=False):
@@ -137,7 +117,6 @@ def createSampleData(filename_E='TCGA_E_final_transposed', filename_CH3='TCGA_CH
     print(sample_CH3.head())
     print(sample_probeToOneHot.head())
 
-
     # _assertAllDataInOrder(sample_CH3, sample_probeToOneHot, sample_E, transposedE=True, distancesFile=sample_dist)
     suffix = "closest_gene_in20k"
     if withDistances:
@@ -148,22 +127,6 @@ def createSampleData(filename_E='TCGA_E_final_transposed', filename_CH3='TCGA_CH
     sample_CH3.to_csv('../res/TCGA_CH3_sample'+suffix+'.csv', index=False)
     sample_probeToOneHot.to_csv('../res/probeToOneHotAll_sample'+suffix+'.csv', index=False)
 
-    # colnames = ['subject'] + [str(i) for i in range(100)]
-    # df_E = df_E.rename(columns=df_E.iloc[1])
-    # df_CH3 = df_CH3.rename(columns=df_CH3.iloc[1])
-    # df_CH3.columns = df_CH3.iloc[0]
-    # df_E.columns = df_E.iloc[0]
-    # df_CH3 = df_CH3[1:]  # take the data less the header row
-    # df_E = df_E[1:]  # take the data less the header row
-    #
-    # df_E['subject'] = df_E.index
-    # df_CH3['subject'] = df_CH3.index
-
-    # left_E_t = pd.read_csv('../res/TCGA_E_t.csv')
-    # right_CH3_t = pd.read_csv('../res/TCGA_CH3_t.csv')
-    # merged = pd.merge(df_E, df_CH3, on='subject')
-    # print(merged.head())
-    # merged.to_csv('../res/fullData.csv', index=False)
 
 def probeToOneHotAsCSVcolumnsTooLargeForPkl(alreadyHaveSeqToOneHotDictPerChr=True):
     if not alreadyHaveSeqToOneHotDictPerChr:
@@ -333,6 +296,7 @@ def createFileWithHighVarItems(filename, dstFilename, percentToKeep=None, identi
     assert len(df.iloc[:,0]) < n_items
     # df.to_csv(dstFilename, index=False)
 
+
 def split_data_indices_into_train_test_val(CH3_shape):
     res_dir = '../res/'
     try:
@@ -448,12 +412,6 @@ def createMatchingDataSets(probeToOneHotFileName, perChromosome, chromosome=None
         # their CH3 values
         randCpGmethylData = pd.read_csv('../res/CH3_inputCpGs_sample.csv', index_col=None) #TODO: change from run_example
         assert (randCpGmethylData['Probe'] == randCpGDistData['Probe']).all() # should already be OK because this was verified during construction
-        #TODO: need to assert for subjects as well (although dealth with upon creation)
-        # if run_example:
-        #     relevantData.to_csv('../res/CH3_inputCpGs_sample.csv', index=None)
-    # assert len(df_CH3) == len(probeData), "Not the same length!"
-    # assert (df_E.columns[1:] == df_CH3.columns[1:]).all(), "E and CH3 columns not the same order"
-    # assert (df_CH3['Probe'] == probeData['Probe']).all(), "probe seq data and CH3 probe values not the same order"
 
     # saving
     df_E.to_csv('../res/TCGA_E_final'+filenameSuffix+'.csv', index=False)
@@ -465,24 +423,6 @@ def createMatchingDataSets(probeToOneHotFileName, perChromosome, chromosome=None
         probeToOneHot.to_csv(Conf.probeToOneHotPrefixAll + filenameSuffix + '.csv', index=False)
         save_obj(df_CH3.shape, "CH3_final_shape")
         save_obj(probeToOneHot.shape, 'probeToOneHot_final_shape')
-        # if withDistances:
-        #     distances.to_csv('../res/distances.csv', index=None)
-
-    # distances = pd.read_csv(Conf.dfDistances, index_col=False)
-    # train_probes_idx, train_subjects_idx, validation_probes_idx, validation_subjects_idx, test_probes_idx, test_subjects_idx = split_data_indices_into_train_test_val(CH3_shape=df_CH3.shape)
-    #
-    # save_subset_data(df_CH3, train_probes_idx, train_subjects_idx,"df_CH3", "_train")
-    # save_subset_data(df_CH3, validation_probes_idx, validation_subjects_idx,"df_CH3", "_val")
-    # save_subset_data(df_CH3, test_probes_idx, test_subjects_idx,"df_CH3", "_test")
-    # save_subset_data(df_E, [], train_subjects_idx,"df_E", "_train")
-    # save_subset_data(df_E, [], validation_subjects_idx,"df_E", "_val")
-    # save_subset_data(df_E, [], test_subjects_idx,"df_E", "_test")
-    # save_subset_data(distances, train_probes_idx, [],"dist", "_train")
-    # save_subset_data(distances, validation_probes_idx, [],"dist", "_val")
-    # save_subset_data(distances, test_probes_idx, [],"dist", "_test")
-    # save_subset_data(probeToOneHot, train_probes_idx, [],"probeToOneHot", "_train")
-    # save_subset_data(probeToOneHot, validation_probes_idx, [],"probeToOneHot", "_val")
-    # save_subset_data(probeToOneHot, test_probes_idx, [],"probeToOneHot", "_test")
 
 
 def save_subset_data(original, row_indices, columns_indices, original_name, suffix_name):
@@ -550,13 +490,6 @@ def create_data_for_task1_task2_comparison(full_path_proximity_data_dir, full_pa
                 probes_to_keep.append(idx)
         save_obj(probes_to_keep,"test_probes_comp_task1_task2")
 
-        # if len(probes_to_remove) < 1:
-        #     probes_to_remove = list(df_proximity.iloc[:,0]) # remove any probes that are contained in the proximity dataset
-        #     probes_to_keep = [probe for probe in df_rand.iloc[:,0] if probe not in probes_to_remove]
-        # df_rand_no_proximity = df_rand.loc[df_rand.iloc[:,0].isin(probes_to_keep), :]
-        # df_rand_no_proximity.to_csv('../out/'+fname.split('.csv')[0]+'_no_proximity.csv', index=False)
-
-
 
 def createMethylWithHighestVariance(n=50000):
     df = pd.read_csv(Conf.dfMethyl, index_col=None)
@@ -566,16 +499,6 @@ def createMethylWithHighestVariance(n=50000):
     print(df_nlargest.tail())
     df_nlargest.to_csv('../res/' + Conf.dfMethylName + '_nlargest.csv', index=None)
 
-# def verifyLargeFileMatches():
-#     with open('../res/probeToOneHotMtrx_400_1.csv', 'r') as f:
-#         counter = 0
-#         for row in f:
-#             print(row[0])
-#             counter +=1
-#             if counter >5:
-#                 break
-
-# createListOfProbesInData()
 
 def getInputCpGvaluesOverSubjects(sample):
     CH3_original = pd.read_csv('../res/combined_CH3.csv', index_col=None)
@@ -613,79 +536,231 @@ def getInputCpGvaluesOverSubjects(sample):
     print(relevantData.head())
     print(randCpGdistancesData.head())
 
-# def read_rows_from_large_file_to_dataframe(filepath, rowIDs):
-#     data = []
-#     rowIDs.sort()
-#     rowIDsIter = iter(rowIDs)
-#     nextRowID = next(rowIDsIter)
-#     counter = 0
-#     with open(filepath) as f:
-#         for line in f:
-#             if counter==nextRowID:
-#                 line = line.replace('\n', '')
-#                 line = line.split(',')
-#                 data.append(line)
-#                 if nextRowID == rowIDs[-1]:
-#                     break
-#                 nextRowID = next(rowIDsIter)
-#             counter += 1
-#     df = pd.DataFrame(data)
-#     df.columns = df.iloc[0,:]
-#     df = df.drop(axis=0, index=0)
-#     return df
-#
-# def generate_samples(filepath, nrows_sample, nrows_original):
-#     rowsToRead = [0]
-#     a = [i for i in range(1,nrows_original)]
-#     a = random.run_example(a, nrows_sample)
-#     rowsToRead.extend(a)
-#     df = read_rows_from_large_file_to_dataframe(filepath, rowsToRead)
-#     print(df)
-#     return df
+
+def preprocess_healthy_data(model):
+    import random
+    '''
+    Assumes res is the healthy folder, containing BRCA_normal_expressi and BRCA_normal_methyl, as well as
+    the original, unhealthy, distances.csv and probeToOneHotAll.csv
+    '''
+    # Healthy
+    def get_rows(data_in):
+        data_out = []
+        for i, line in enumerate(data_in):
+            if i in line_idx:
+                line_ = line.replace('\n', '').split(',')
+                if 'Probe' in line:
+                    data_out.append(line_)
+                elif line_[0] in probes and line_[0] in probes_dist_window:
+                    line_ = [float(i) if 'cg' not in i and 'ch' not in i else i for i in line_]
+                    data_out.append(line_)
+        return data_out
+
+    probes_idx = load_obj("test_probes_idx_{}".format(model))
+    subjects_idx = load_obj("test_subjects_idx_{}".format(model))
+    probes = np.array(list(load_obj("probes_list_{}".format(model))))
+    if model == 1:
+        probes_dist_window = np.array(list(load_obj("probes_kept_from_distance_window")))
+        probes = [p for p in probes if p in probes_dist_window]
+        probes = np.array(probes)
+    else:
+        # for model 2 data was prepared in advance, keeping only CpGs that have some gene in the 10K window to
+        # prevent an unnecessarily large distance matrix (otherwise it would contain CpG-gene distances that would be
+        # removed if not within window limit. For model 3, none were removed, so no pickle file created as above.
+        probes_dist_window = probes
+    subjects = np.array(list(load_obj("subjects_list_{}".format(model))))
+    subjects = subjects[subjects_idx]
+    probes = probes[probes_idx]
+
+    p = pd.read_csv('../res/probeToOneHotAll.csv', usecols=[0])
+    n_cpgs = len(p)
+    ch3 = open('../res/TCGA_CH3_final.csv')
+    ch3_df = pd.read_csv('../res/TCGA_CH3_final.csv')
+    p = open('../res/probeToOneHotAll.csv')
+    p_cols = pd.read_csv('../res/processed_healthy/probeToOneHotAll.csv', nrows=1)
+    p_cols = p_cols.columns
+    d = open('../res/distances.csv')
+    d_cols = pd.read_csv('../res/distances.csv', nrows=1)
+    d_cols = d_cols.columns
+    line_idx = []
+    #
+    # selecting random CpGs to evaluate on (will be intersected with test set to decrease size)
+    if model > 1:
+        for i in range(n_cpgs):
+            if random.random() < 0.01:  # 0.01:
+                line_idx.append(i)
+    else:
+        line_idx = range(len(probes)*10000)
+
+    # CH3
+    # keeping only chosen rows
+    ch3_w = get_rows(ch3)
+    ch3_cols = ch3_df.columns
+    ch3 = pd.DataFrame(ch3_w, columns=ch3_cols)
+    # removing probes not in test
+    ch3 = ch3.loc[ch3['Probe'].isin(probes)]
+    # removing subjects not in test:
+    subjects_short = [s.split('.')[2] for s in subjects]
+    ch3_cols_subjects = ch3_cols[1:]
+    ch3_cols_short = [s.split('.')[2] for s in ch3_cols_subjects]
+    ch3_cols_drop = [ch3_cols_subjects[i] for i in range(len(ch3_cols_subjects)) if
+                     ch3_cols_short[i] not in subjects_short]  # those to be removed
+    ch3 = ch3.drop(ch3_cols_drop, axis=1)
+    print(ch3.head())
+    ch3.to_csv('../res/TCGA_CH3_final.csv', index=False)
+
+    # E - removing subjects not in test
+    e_df = pd.read_csv('../res/TCGA_E_final.csv')
+    e_df = e_df.drop(ch3_cols_drop, axis=1) # dropping the same columns as in df_ch3 as they are the same cpgs to drop.
+    print(e_df.head())
+    e_df.to_csv('../res/TCGA_E_final.csv', index=False)
+
+    # probeToOneHotall - removing probes not in test
+    p_w = get_rows(p)
+    p = pd.DataFrame(p_w, columns=p_cols)
+    p = p.loc[p['Probe'].isin(probes)]
+    print(p.head())
+    p.to_csv('../res/probeToOneHotAll.csv', index=False)
+
+    # dist - removing probes not in test
+    d_w = get_rows(d)
+    d = pd.DataFrame(d_w, columns=d_cols)
+    d = d.loc[d['Probe'].isin(probes)]
+    print(d.head())
+    d.to_csv('../res/distances.csv', index=False)
+
+    transposeE(probeDataFileName='../res/probeToOneHotAll.csv')
+    _verify_no_train_in_test_data()
 
 
+def _verify_no_train_in_test_data():
+    t_s_idx = load_obj("train_subjects_idx")
+    e = pd.read_csv('../res_cancer/TCGA_E_final_transposed.csv', usecols=[0])
+    e_s = np.array(list(e["Unnamed: 0"]))
+    e_s_train = e_s[t_s_idx]
+    print(len(e_s_train))
+    e_h = pd.read_csv('../res/TCGA_E_final_transposed.csv', usecols=[0])
+    e_h_s = list(e_h["Unnamed: 0"])
+    assert len([i for i in e_h_s if i in e_s_train]) == 0
+    # print()
 
-if __name__ == "__main__":
+    t_s_idx = load_obj("train_probes_idx")
+    t_s_probes_window = load_obj("probes_kept_from_distance_window")
+    e = pd.read_csv('../res_cancer/TCGA_CH3_final.csv', usecols=[0])
+    e_s = np.array(list(e["Probe"]))
+    e_s = np.array([p for p in e_s if p in t_s_probes_window])
+    e_s_train = e_s[t_s_idx]
+    print(len(e_s_train))
+    e_h = pd.read_csv('../res/TCGA_CH3_final.csv', usecols=[0])
+    e_h_s = list(e_h["Probe"])
+    assert len([i for i in e_h_s if i in e_s_train]) == 0
 
-    # createMethylWithHighestVariance()
 
-    #e = pd.read_csv('../res/TCGA_E_final.csv', index_col=None)
-    # distances = pd.read_csv('../res/distances.csv', nrows=1)
-    # cols = distances.columns[1:]
-    # genesToRemove = [g for g in cols if str(g) not in np.array(e.iloc[:, 0])]
-    # print(genesToRemove)
-    # print(len(e.iloc[:,0]))
-    # print(len([e.iloc[i, 0] for i in range(len(e.iloc[:, 0])) if e.iloc[i, 0] == cols[i]]))
-    # distances = pd.read_csv('../res/distances.csv', index_col=None)
-    # distances = distances.drop(genesToRemove, 1)
-    # distances.to_csv('../res/distances_.csv', index=False)
+def get_sub_data(type='train'):
+    probes = load_obj(type+'_probes_idx')
+    subjects = load_obj(type + '_subjects_idx')
+    probes_in_dist_window = load_obj("probes_kept_from_distance_window")
+    p = pd.read_csv('../res/probeToOneHotAll.csv')
+    p = p[p["Probe"].isin(probes_in_dist_window)]
+    p = p.iloc[probes, :]
+    print(p.head())
+    p.to_csv('../res/probeToOneHotAll_.csv', index=False)
 
-    # distances = pd.read_csv('../res/distances.csv')
-    # distances = distances.drop('Unnamed: 0', 1)
-    # print(distances.head())
-    # print(distances.columns)
-    # distances = distances.to_csv('../res/distances__.csv', index=False)
-    # methyl with largest var:
+    print("Finished p")
+    ch3 = pd.read_csv('../res/TCGA_CH3_final.csv')
+    relevant_columns_ch3 = [0]
+    relevant_columns_ch3.extend([s + 1 for s in subjects])
 
-    # createExpressionFileWithHighVarGenes(0.05)
-    # createFileWithHighVarItems(Conf.dfMethyl,Conf.dfMethyl,0.05)
+    ch3 = ch3.iloc[:, relevant_columns_ch3]
+    ch3 = ch3[ch3["Probe"].isin(probes_in_dist_window)]
+    ch3 = ch3.iloc[probes, :]
+    # ch3 = ch3.loc[ch3['Probe'].isin(probes)]
+    ch3.to_csv('../res/TCGA_CH3_final_.csv', index=False)
+    print(ch3.head())
+    save_obj(ch3["Probe"], "probes_in_both_test_and_window_model1")
+    print("Finished ch3")
 
-    # all if NOT too large:
-    # ------------------
-    # surroundingSeqToOneHotMtrx(False)
-    # probeToOneHotAll = probeToOneHotAsCSVcolumns(isSample=False, enhancersOnly=False)
-    # probeToOneHotAll.to_csv(Conf.probeToOneHotPrefixAll+'.csv', index=False)
-    # createDistanceMatrx(numProbes=1000, sort_probes=True, preSelectedProbes=False, useInverseDist=True, window_limit=4000)
-    # Conf = ConfSample
-    # createMatchingDataSets(probeToOneHotFileName=Conf.probeToOneHotPrefixAll+'.csv', perChromosome=False, withDistances=True) #TODO
-    # transposeE(probeDataFileName=Conf.probeToOneHotPrefixAll+'.csv')
+    d = pd.read_csv('../res/distances.csv')
+    d = d[d["Probe"].isin(probes_in_dist_window)]
+    d = d.iloc[probes,:]
+    print(d.head())
+    d.to_csv('../res/distances_.csv', index=False)
 
-    # getInputCpGvaluesOverSubjects(run_example=False)
+    print("Finished d")
+
+    e = pd.read_csv('../res/TCGA_E_final_transposed.csv')
+    e = e.iloc[subjects,:]
+    e.to_csv('../res/TCGA_E_final_transposed_.csv', index=False)
+    print(e.head())
+
+    print("Finished!")
+
+
+def combine_train_and_validation():
+    d = '/Users/levy.alona/Downloads/model_1/'
+    train_p_idx = load_obj('train_probes_idx', d)
+    val_p_idx = load_obj('validation_probes_idx', d)
+    train_s_idx = load_obj('train_subjects_idx', d)
+    val_s_idx = load_obj('validation_subjects_idx', d)
+    test_s_idx = load_obj('test_subjects_idx', d)
+    test_p_idx = load_obj('test_probes_idx', d)
+
+    a = list(val_p_idx)
+    a.extend(list(train_p_idx))
+    save_obj(train_p_idx, 'train_probes_idx_no_val', d)
+    save_obj(a, 'train_probes_idx', d)
+    print(len(a))
+
+    a = list(val_s_idx)
+    a.extend(list(train_s_idx))
+    save_obj(train_s_idx, 'train_subjects_idx_no_val', d)
+    save_obj(a, 'train_subjects_idx', d)
+    print(len(a))
+    save_obj(val_s_idx, 'val_subjects_idx_original', d)
+    save_obj(test_s_idx, 'validation_subjects_idx',d)
+    save_obj(val_p_idx, 'val_probes_idx_original', d)
+    save_obj(test_p_idx, 'validation_probes_idx', d)
+
+
+def rebalance_train_val_test():
+    for model_id in [1, 2,3]:
+        d = '/Users/levy.alona/Downloads/model_{}/'.format(model_id)
+        train_sub_2 = load_obj('train_subjects_idx', d)
+        test_sub_2 = load_obj('test_subjects_idx', d)
+        val_sub_2 = load_obj('validation_subjects_idx', d)
+
+        train_p_2 = list(load_obj('train_probes_idx', d))
+        test_p_2 = load_obj('test_probes_idx', d)
+        val_p_2 = load_obj('validation_probes_idx', d)
+
+        totl_len = len(train_sub_2) + len(test_sub_2) + len(val_sub_2)
+        n_test = int(totl_len * 0.1)
+        test_sub_2_small = test_sub_2[:n_test]
+        train_sub_2.extend(test_sub_2[n_test:])
+        totl_len = len(train_sub_2) + len(test_sub_2_small) + len(val_sub_2)
+        print(totl_len)
+        save_obj(test_sub_2_small, "test_subjects_idx", d)
+        save_obj(train_sub_2, "train_subjects_idx", d)
+
+        totl_len = len(train_p_2) + len(test_p_2) + len(val_p_2)
+        n_test = int(totl_len * 0.1)
+        test_p_2_small = test_p_2[:n_test]
+        train_p_2.extend(test_p_2[n_test:])
+        totl_len = len(train_p_2) + len(test_p_2_small) + len(val_p_2)
+        print(totl_len)
+        save_obj(test_p_2_small, "test_probes_idx", d)
+        save_obj(train_p_2, "train_probes_idx", d)
+
+
+# if __name__ == "__main__":
+    # BELOW IS AN EXAMPLE OF USING THE PREPROCESSING FUNCTIONS. Your data may be quite different to begin with, but some
+    # of these functions contain code segments that you may find useful.
 
     # combine:
     # ---------------
     # combineDataSets('../res/expressi_lung.csv', '../res/combined_E_breast_prostate.csv', 'E')
     # combineDataSets('../res/methyl_lung.csv', '../res/combined_CH3_breast_prostate.csv', 'CH3')
+
     # combineDataSets('../res/expressi_prad.csv', '../res/expressi_brca.csv', 'expressi_combined')
     # combineDataSets('../res/methyl_prad.csv', '../res/methyl_brca.csv', 'methyl_combined')
 
@@ -696,33 +771,3 @@ if __name__ == "__main__":
     # createDistanceMatrx(numProbes=-1, sort_probes=True, preSelectedProbes=False, useInverseDist=True, window_limit=20000)
     # createMatchingDataSets(probeToOneHotFileName=Conf.probeToOneHotPrefixAll+'.csv', perChromosome=False, withDistances=True)
     # transposeE(probeDataFileName=Conf.probeToOneHotPrefixAll+'.csv')
-
-    # all if too large:
-    #------------------
-    # probeToOneHotAsCSVcolumnsTooLargeForPkl()
-    # verifyLargeFileMatches()
-    # createMatchingDataSets(probeToOneHotFileName='probeToOneHotLargeAll.csv', perChromosome=False)
-    # transposeE(probeDataFileName=Conf.probeToOneHotMtrxFilePrefixAll+'.csv')
-
-    # per chromosome
-    #-----------------
-
-    # surroundingSeqToOneHotMtrx(True)
-    # for c in [i for i in Conf.chrArr[10:]]:
-    #     print(c)
-    #
-    #     probeToOneHotFileName = Conf.probeToOneHotMtrxFilePrefixChr+str(c)+'.csv'
-    #     probeToOneHotChr = probeToOneHotAsCSVcolumns(isSample=False, perChromosome=True, chromosome=c)
-    #     probeToOneHotChr.to_csv(Conf.probeToOneHotMtrxFilePrefixChr+str(c)+'.csv', index=False)
-    #     createMatchingDataSets(probeToOneHotFileName=probeToOneHotFileName,
-    #                            chromosome=c,
-    #                            perChromosome=True)
-    #     transposeE(filename_CH3='TCGA_CH3_final_Chr_'+str(c),filename_E='TCGA_E_final', probeDataFileName=Conf.probeToOneHotMtrxFilePrefixChr+str(c)+'.csv')
-
-    # Sample
-    #-----------
-    # createSampleData(withDistances=True)
-    # createSingleDataFile()
-    # createTrainTestFilesDeepWideReady(isSample=True)
-
-    create_data_for_task1_task2_comparison('/home/alona/data/methyl_new/model_eccb_no_dist_limit_800_with_5bp_rand_100kCpG/res/', '/home/alona/data/methyl_new/model_10k_window_dist_to_closest_gene/res/')

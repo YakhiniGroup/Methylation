@@ -18,10 +18,10 @@ The pre-trained weights can be download them from the link provided in the READM
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 3
-filename_sequence = 'probeToOneHotAll_sample_mini.csv'
-filename_expression = 'e_sample_mini.csv'
-filename_dist = 'd_sample_mini.csv'
+load_model_ID = 1
+filename_sequence = 'probeToOneHotAll.csv'
+filename_expression = 'TCGA_E_final_transposed.csv'
+filename_dist = 'distances.csv'
 run_example = True  # use this if you want to see a sample run on a mini data-set (note - these do not reflect the results of the full dataset)
 
 ####  YOUR SETTINGS - END ####
@@ -42,8 +42,6 @@ train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blin
     train_portion_subjects=0,
     train_portion_probes=0, validation_portion_subjects=0,
     validation_portion_probes=0, directory='../res/', is_prediction=True)
-
-# train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blind, test_e_blind = None, None, None, None, None, None, None
 
 d = pd.read_csv('../res/' + filename_expression, nrows=1)
 n_genes = len(d.columns)-1

@@ -21,9 +21,12 @@ version, with no special characters.
 
 ####  YOUR SETTINGS - START ####
 
-load_model_ID = 3  # see explanation above
-test_time = False   # when you want to test on the test set, which was automatically generated for each of the files you supplied in your conf settings.
-save_models = False  # choose true if you want to save the model while training (will be saved automatically if performance is good or if 90 minutes have passed - see model.py)
+# If you have already used run.py before, and wish to run on NEW data, make sure to remove the pkl files created under
+# the res folder (train/va/test probes and subjects)
+
+load_model_ID = 1  # see explanation above
+test_time = False  # when you're ready for testing after using save_models below (our code handles the random splitting of the data into train/val/test)
+save_models = False  # if you want to save the model while training (saved upon validation improvement or > 90 minutes)
 sample = True  # will use the sample configuration under conf.py -> ConfSample
 
 ####  YOUR SETTINGS - END ####
@@ -40,8 +43,6 @@ train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blin
     train_portion_subjects=Conf.train_portion_probes,
     train_portion_probes=Conf.train_portion_probes, validation_portion_subjects=Conf.validation_portion_subjects,
     validation_portion_probes=Conf.validation_portion_probes, directory='../res/', load_model_ID=load_model_ID)
-
-# train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blind, test_e_blind = None, None, None, None, None, None, None
 
 d = pd.read_csv('../res/' + Conf.filename_expression, nrows=1)
 n_genes = len(d.columns)-1

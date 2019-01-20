@@ -2,6 +2,7 @@ import os
 from helperMethods import *
 from scipy.stats import spearmanr
 import matplotlib
+
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import tensorflow as tf
@@ -17,8 +18,10 @@ class Model():
     def __init__(self, sample, modelID,
                  lr, multiplyNumUnitsBy, n_quant, neighborAlpha, c,
                  ff_h1, ff_h2, conv_f, conv_p, conv_s, connected_h1, connected_h2, regularization_scale,
-                 train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blind, test_e_blind, n_genes,
-                 ff_n_hidden, connected_n_hidden, optimizer, loss, load_model, is_prediction, test_time, save_models, save_weights):
+                 train, validation, test, validation_ch3_blind, test_ch3_blind, validation_e_blind, test_e_blind,
+                 n_genes,
+                 ff_n_hidden, connected_n_hidden, optimizer, loss, load_model, is_prediction, test_time, save_models,
+                 save_weights):
 
         # perChromosome = False
 
@@ -44,7 +47,7 @@ class Model():
         self.ff_h2 = ff_h2
         self.conv_f = conv_f
         self.conv_p = conv_p
-        self.conv_s =conv_s
+        self.conv_s = conv_s
         self.connected_h1 = connected_h1
         self.connected_h2 = connected_h2
         self.regularization_scale = regularization_scale
@@ -61,7 +64,6 @@ class Model():
         self.validation_e_blind = validation_e_blind
         self.test_e_blind = test_e_blind
 
-
     def build(self, with_autoencoder):
 
         self.regularizer = tf.contrib.layers.l1_regularizer(scale=self.regularization_scale)
@@ -71,10 +73,10 @@ class Model():
         def save_single_weights(sess, tf_weights, name):
             weights = sess.run(tf_weights)
             weights = pd.DataFrame(weights)
-            weights.to_csv('../out/postTrainingAnalysis/'+name+'_weights.csv', index=None, columns=None)
+            weights.to_csv('../out/postTrainingAnalysis/' + name + '_weights.csv', index=None, columns=None)
 
         # -- FC --  # takes gene expression data (~20K)
-        units = np.array( [int(self.ff_h1*(0.9**i)) for i in range(self.ff_num_hidden)] )
+        units = np.array([int(self.ff_h1 * (0.9 ** i)) for i in range(self.ff_num_hidden)])
         # -- CNN -- # takes ambient seq data (~800)
         dimx = self.Conf.numSurrounding * 2
         dimy = self.Conf.numBases
@@ -111,7 +113,7 @@ class Model():
         # -- FF --
         def encoder(inputs_ff):
             scope_name = 'gene_exp_encoder_decoder/'
-            with tf.variable_scope(scope_name,reuse=tf.AUTO_REUSE):
+            with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE):
                 # with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
                 # encoder
                 for i in range(self.ff_num_hidden):
@@ -120,21 +122,26 @@ class Model():
                         layer_ff = tf.layers.dense(inputs=inputs_ff, units=units[i], activation=None, name=name,
                                                    kernel_initializer=tf.contrib.layers.xavier_initializer(
                                                        uniform=True), kernel_regularizer=self.regularizer,
-                                                   bias_initializer=self.init_xavier, trainable=ff_trainable, reuse=tf.AUTO_REUSE)
-                        self.tf_weights_genes = tf.get_default_graph().get_tensor_by_name(scope_name +'/' + name + '/kernel:0') #TODO: use tf.all_variables() to find kernel name
+                                                   bias_initializer=self.init_xavier, trainable=ff_trainable,
+                                                   reuse=tf.AUTO_REUSE)
+                        self.tf_weights_genes = tf.get_default_graph().get_tensor_by_name(
+                            scope_name + '/' + name + '/kernel:0')  # TODO: use tf.all_variables() to find kernel name
                     else:
                         layer_ff = tf.layers.dense(inputs=layer_ff__, units=units[i], activation=None, name=name,
                                                    kernel_initializer=tf.contrib.layers.xavier_initializer(
                                                        uniform=True), kernel_regularizer=self.regularizer,
-                                                   bias_initializer=self.init_xavier, trainable=ff_trainable, reuse=tf.AUTO_REUSE)
+                                                   bias_initializer=self.init_xavier, trainable=ff_trainable,
+                                                   reuse=tf.AUTO_REUSE)
 
-                    layer_ff_ = tf.layers.batch_normalization(layer_ff,trainable=ff_trainable, reuse=reuse_var, name="batch_norm_"+name)
+                    layer_ff_ = tf.layers.batch_normalization(layer_ff, trainable=ff_trainable, reuse=reuse_var,
+                                                              name="batch_norm_" + name)
                     layer_ff__ = self.activation(layer_ff_)
                     tf.summary.histogram(name, layer_ff_)
                     tf.summary.histogram(name + '/activation', layer_ff__)
             return layer_ff__
 
         scope_name = 'all_but_gene_exp/'
+
         def dist(inputs_dist):
             with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as var_scope:
                 # dropout = None
@@ -171,7 +178,8 @@ class Model():
                                                 activation=None, name=name, bias_initializer=self.init_xavier)
                         conv = tf.layers.batch_normalization(conv)
                         conv_activ1 = activationCNN(conv)
-                        tf_weights_conv = tf.get_default_graph().get_tensor_by_name('all_but_gene_exp//all_but_gene_exp//conv_0/kernel:0')
+                        tf_weights_conv = tf.get_default_graph().get_tensor_by_name(
+                            'all_but_gene_exp//all_but_gene_exp//conv_0/kernel:0')
                         pool = pooling(conv_activ1, pool_size=pool_size_layer1, strides=pool_strides_layer1,
                                        name='pool_' + str(i))
                     else:
@@ -213,8 +221,10 @@ class Model():
                 name = 'dist_gene_attn_%d' % i
 
                 if self.load_model == 1:
-                    inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes/2), activation=None, name='fully_conn_gene_attn_dist',
-                                               kernel_regularizer=None, bias_initializer=self.init_xavier, kernel_initializer=self.init_xavier)
+                    inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes / 2),
+                                                        activation=None, name='fully_conn_gene_attn_dist',
+                                                        kernel_regularizer=None, bias_initializer=self.init_xavier,
+                                                        kernel_initializer=self.init_xavier)
                 else:
                     inputs_dist_layer = tf.layers.dense(inputs=inputs_dist, units=int(self.n_genes / 6),
                                                         activation=None, name='fully_conn_gene_attn_dist',
@@ -224,10 +234,10 @@ class Model():
                 if not self.load_model == 1:
                     inputs_dist_layer = self.activation(inputs_dist_layer)
                 inputs_dist_layer2 = tf.layers.dense(inputs=inputs_dist_layer, units=self.n_genes, activation=None,
-                                               name='fully_conn_gene_attn_dist_2',
-                                               kernel_regularizer=None, bias_initializer=self.init_xavier,
-                                               kernel_initializer=self.init_xavier)
-                inputs_dist_layer2 = tf.layers.batch_normalization(inputs_dist_layer2, name=name+"_2")
+                                                     name='fully_conn_gene_attn_dist_2',
+                                                     kernel_regularizer=None, bias_initializer=self.init_xavier,
+                                                     kernel_initializer=self.init_xavier)
+                inputs_dist_layer2 = tf.layers.batch_normalization(inputs_dist_layer2, name=name + "_2")
                 if not self.load_model == 1:
                     inputs_dist_layer2 = self.activation(inputs_dist_layer2)
                 inputs_dist_layer2 = tf.nn.softmax(inputs_dist_layer2)
@@ -239,19 +249,23 @@ class Model():
             with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as var_scope:
                 name = 'geneExp_gene_attn_%d' % i
 
-                inputs_geneExp_layer = tf.layers.dense(inputs=inputs_ff, units=int(self.n_genes/6), activation=None, name='fully_conn_gene_attn_geneExp',
-                                               kernel_regularizer=None, bias_initializer=self.init_xavier, kernel_initializer=self.init_xavier)
+                inputs_geneExp_layer = tf.layers.dense(inputs=inputs_ff, units=int(self.n_genes / 6), activation=None,
+                                                       name='fully_conn_gene_attn_geneExp',
+                                                       kernel_regularizer=None, bias_initializer=self.init_xavier,
+                                                       kernel_initializer=self.init_xavier)
                 inputs_geneExp_layer = tf.layers.batch_normalization(inputs_geneExp_layer, name=name)
                 inputs_geneExp_layer = self.activation(inputs_geneExp_layer)
 
-                inputs_geneExp_layer2 = tf.layers.dense(inputs=inputs_geneExp_layer, units=self.n_genes, activation=None,
-                                               name='fully_conn_gene_attn_geneExp_2',
-                                               kernel_regularizer=None, bias_initializer=self.init_xavier,
-                                               kernel_initializer=self.init_xavier)
-                inputs_geneExp_layer2 = tf.layers.batch_normalization(inputs_geneExp_layer2, name=name+"_2")
+                inputs_geneExp_layer2 = tf.layers.dense(inputs=inputs_geneExp_layer, units=self.n_genes,
+                                                        activation=None,
+                                                        name='fully_conn_gene_attn_geneExp_2',
+                                                        kernel_regularizer=None, bias_initializer=self.init_xavier,
+                                                        kernel_initializer=self.init_xavier)
+                inputs_geneExp_layer2 = tf.layers.batch_normalization(inputs_geneExp_layer2, name=name + "_2")
 
                 inputs_geneExp_layer2 = self.activation(inputs_geneExp_layer2)
-                inputs_geneExp_layer2 = tf.nn.softmax(inputs_geneExp_layer2) # for probabilities #TODO: have the distance vectpr activate? add to loss?
+                inputs_geneExp_layer2 = tf.nn.softmax(
+                    inputs_geneExp_layer2)  # for probabilities #TODO: have the distance vectpr activate? add to loss?
 
             return inputs_geneExp_layer2
 
@@ -269,7 +283,8 @@ class Model():
                                                 activation=None, name=name, bias_initializer=self.init_xavier)
                         conv = tf.layers.batch_normalization(conv)
                         conv_activ1 = activationCNN(conv)
-                        tf_weights_conv_attn = tf.get_default_graph().get_tensor_by_name('all_but_gene_exp//all_but_gene_exp//conv_gene_attn_0/kernel:0')
+                        tf_weights_conv_attn = tf.get_default_graph().get_tensor_by_name(
+                            'all_but_gene_exp//all_but_gene_exp//conv_gene_attn_0/kernel:0')
                         pool = pooling(conv_activ1, pool_size=pool_size_layer1, strides=pool_strides_layer1,
                                        name='pool_gene_attn_' + str(i))
                     else:
@@ -296,26 +311,28 @@ class Model():
                                                 kernel_initializer=self.init_xavier)
                 cnn_fc_layer2 = tf.layers.batch_normalization(cnn_fc_layer2, name=name + "_2")
                 cnn_fc_layer2 = self.activation(cnn_fc_layer2)
-                cnn_fc_layer2 = tf.nn.softmax(cnn_fc_layer2)  # for probabilities #TODO: have the distance vectpr activate? add to loss?
-                # cnn_fc_layer2 = tf.layers.batch_normalization(cnn_fc_layer2, name=name + "_2")
-                # cnn_fc_layer2 = tf.nn.tanh(cnn_fc_layer2)
+                cnn_fc_layer2 = tf.nn.softmax(
+                    cnn_fc_layer2)  # for probabilities #TODO: have the distance vectpr activate? add to loss?
+
             return cnn_fc_layer2, tf_weights_conv_attn
 
         #  -- CONNECTED --
-        def connected(cnn_fc_layer__, layer_ff__, layer_dist__, inputs_ff, inputs_dist, dist_gene_attn_out, gene_gene_attn_out, cnn_gene_attn_out):
+        def connected(cnn_fc_layer__, layer_ff__, layer_dist__, inputs_ff, inputs_dist, dist_gene_attn_out,
+                      gene_gene_attn_out, cnn_gene_attn_out):
             with tf.variable_scope(scope_name, reuse=tf.AUTO_REUSE) as var_scope:
                 for i in range(num_connected_layers):
                     name = 'conn_dense_%d' % i
                     if i == 0:
-                       if self.load_model == 1:
-                           layer = tf.layers.dense(inputs=tf.concat(
-                               [cnn_fc_layer__, tf.multiply(inputs_ff, dist_gene_attn_out)],
-                               axis=1), units=connected_units[i], activation=None, name=name)
-                       else:
-                           layer = tf.layers.dense(inputs=tf.concat([cnn_fc_layer__, tf.multiply(cnn_gene_attn_out, inputs_ff),
-                                                                     tf.multiply(inputs_ff, gene_gene_attn_out),
-                                                                     tf.multiply(inputs_ff, dist_gene_attn_out)],
-                                             axis=1), units=connected_units[i], activation=None, name=name)
+                        if self.load_model == 1:
+                            layer = tf.layers.dense(inputs=tf.concat(
+                                [cnn_fc_layer__, tf.multiply(inputs_ff, dist_gene_attn_out)],
+                                axis=1), units=connected_units[i], activation=None, name=name)
+                        else:
+                            layer = tf.layers.dense(
+                                inputs=tf.concat([cnn_fc_layer__, tf.multiply(cnn_gene_attn_out, inputs_ff),
+                                                  tf.multiply(inputs_ff, gene_gene_attn_out),
+                                                  tf.multiply(inputs_ff, dist_gene_attn_out)],
+                                                 axis=1), units=connected_units[i], activation=None, name=name)
                     else:
                         layer = tf.layers.dense(inputs=layer__, units=connected_units[i], activation=None, name=name,
                                                 kernel_regularizer=None, bias_initializer=self.init_xavier)
@@ -335,17 +352,17 @@ class Model():
                                      inputs_dist, dist_attn, gene_attn, cnn_attn), units=1, name="pred")
             return pred, dist_attn, cnn_attn, gene_attn, tf_weights_conv, tf_weights_conv_attn
 
-
-        def save_attn_results_from_batch(batch_out, f_out_name, seen_rows, methylation_level, input_data_batch, ambient_seq_batch):
+        def save_attn_results_from_batch(batch_out, f_out_name, seen_rows, methylation_level, input_data_batch,
+                                         ambient_seq_batch):
             attn_fname = '../out/' + f_out_name + '.csv'
-            raw_fname = '../out/'+f_out_name+'_raw_data.csv'
-            raw_seq_fname = '../out/'+f_out_name+'_raw_sequence_data.csv'
+            raw_fname = '../out/' + f_out_name + '_raw_data.csv'
+            raw_seq_fname = '../out/' + f_out_name + '_raw_sequence_data.csv'
 
             with open(attn_fname, 'a') as csvwriter:
                 with open(raw_fname, 'a') as csvwriter_raw:
                     with open(raw_seq_fname, 'a') as csvwriter_raw_sequence_data:
-                    # csvwriter.write(','.join([str(i) for i in range(self.Conf.numGenes)]))
-                    # csvwriter.write('\n')
+                        # csvwriter.write(','.join([str(i) for i in range(self.Conf.numGenes)]))
+                        # csvwriter.write('\n')
                         for i in range(len(batch_out)):
                             row = batch_out[i]
                             raw_data_row = input_data_batch[i]
@@ -369,10 +386,12 @@ class Model():
             return seen_rows
 
         # putting the graph all together before testing / training:
-        #------------------------------------------------------
+        # ------------------------------------------------------
 
         encoded = encoder(inputs_ff)
-        full_model, dist_attn, cnn_attn, gene_attn, tf_weights_conv, tf_weights_conv_attn = pred(padded_inputs_cnn, inputs_ff, inputs_dist, encoded)
+        full_model, dist_attn, cnn_attn, gene_attn, tf_weights_conv, tf_weights_conv_attn = pred(padded_inputs_cnn,
+                                                                                                 inputs_ff, inputs_dist,
+                                                                                                 encoded)
         loss_full_model = self.loss_func(labels=labels_, predictions=full_model)
         tf.summary.scalar('loss_full_model', loss_full_model)
 
@@ -385,7 +404,8 @@ class Model():
             else:
                 opt_full_model = self.optimizer_func(self.lr)  # .minimize(cost)
 
-            gradients, variables = zip(*opt_full_model.compute_gradients(loss_full_model)) # todo: remove the autoencoder's gradients and verify working
+            gradients, variables = zip(*opt_full_model.compute_gradients(
+                loss_full_model))  # todo: remove the autoencoder's gradients and verify working
             current_gradients_norm = tf.global_norm(gradients)
             train_step_full_model = opt_full_model.apply_gradients(zip(gradients, variables))
             tf.summary.scalar('gradients_norm_full', current_gradients_norm)
@@ -437,9 +457,9 @@ class Model():
             for i in range(n_batches):
                 if i % 5 == 1:
                     if self.is_prediction:
-                        print("completed %d of %d batches of predictions." %(i, n_batches))
+                        print("completed %d of %d batches of predictions." % (i, n_batches))
                     else:
-                        print("%d of %d" %(i, n_batches))
+                        print("%d of %d" % (i, n_batches))
                         print("MAE so far: ", sum_abs_error / float(len(preds_all)))
                         print("spearman so far: ", spearmanr(preds_all, labels_all))
                         save_obj(labels_all, "labels", directory="../out/")
@@ -464,17 +484,23 @@ class Model():
                     cn = sess.run(cnn_attn, feed_dict={inputs_cnn: ambient_seq_batch})
                     gn = sess.run(gene_attn, feed_dict={inputs_ff: gene_exp_batch})
 
-                    seen_rows_dist = save_attn_results_from_batch(dn, 'dist_attn', seen_rows_dist, labels_batch, dist_batch, ambient_seq_batch.reshape(-1,800*5))
-                    seen_rows_seq = save_attn_results_from_batch(cn, 'sequence_attn', seen_rows_seq, labels_batch, ambient_seq_batch.reshape(-1,800*5), ambient_seq_batch.reshape(-1,800*5))
-                    seen_rows_gene = save_attn_results_from_batch(gn, 'gene_attn', seen_rows_gene, labels_batch, gene_exp_batch, ambient_seq_batch.reshape(-1,800*5))
+                    seen_rows_dist = save_attn_results_from_batch(dn, 'dist_attn', seen_rows_dist, labels_batch,
+                                                                  dist_batch, ambient_seq_batch.reshape(-1, 800 * 5))
+                    seen_rows_seq = save_attn_results_from_batch(cn, 'sequence_attn', seen_rows_seq, labels_batch,
+                                                                 ambient_seq_batch.reshape(-1, 800 * 5),
+                                                                 ambient_seq_batch.reshape(-1, 800 * 5))
+                    seen_rows_gene = save_attn_results_from_batch(gn, 'gene_attn', seen_rows_gene, labels_batch,
+                                                                  gene_exp_batch,
+                                                                  ambient_seq_batch.reshape(-1, 800 * 5))
                     labels_all.extend(labels_batch.flatten())
                     sum_abs_error += batch_cost * len(labels_batch)
 
                 preds_all.extend(pred.flatten())
                 sum += len(pred)
-            # print("sum == num_examples?", sum == self.test.num_examples)
+
             if self.is_prediction:
-                df = pd.DataFrame({'cpg_id':cpg_id_names_all,'sample_id':expression_sample_names_all, 'pred_methyl':preds_all})
+                df = pd.DataFrame(
+                    {'cpg_id': cpg_id_names_all, 'sample_id': expression_sample_names_all, 'pred_methyl': preds_all})
                 df.to_csv('../out/predictions.csv', index=False)
                 print("Completed job! Predictions can be found under the out directory.")
             if not self.is_prediction:
@@ -491,7 +517,6 @@ class Model():
             validation_e_blind_writer = tf.summary.FileWriter('../logs/val_e_blind/model_%s' % self.modelID)
             if not self.load_model:
                 sess.run(tf.global_variables_initializer())
-                # print(sess.run(tf.report_uninitialized_variables()))
 
             mse_queue_val = deque([])
             cor_queue_val = deque([])
@@ -507,6 +532,7 @@ class Model():
             start = time.time()
 
             for e in range(self.Conf.epochs):
+                print("Epoch {}".format(e))
                 for ii in range(self.train.num_examples // self.Conf.batch_size):
                     counter += 1
                     current_time = time.time()
@@ -517,8 +543,6 @@ class Model():
                                                    "../out/ch3_e_blind/model_180m_elapsed_%s_%d_ch3_e_blind.ckpt" % (
                                                        self.modelID, counter))
                             if self.save_weights:
-                                # save_all_weights(sess, self.tf_weights_genes, None, None, self.conv_f,
-                                #              self.train.next_batch(1), self.Conf.numSurrounding, self.Conf.numBases)
                                 save_single_weights(sess, self.tf_weights_genes, "genes")
 
                         tf.reset_default_graph()
@@ -531,13 +555,15 @@ class Model():
                         labels_batch = np.array(labels_batch).reshape((-1, 1))
                         ambient_seq_batch = np.array(ambient_seq_batch).reshape(
                             (-1, self.Conf.numSurrounding * 2, self.Conf.numBases, 1))
-                        batch_cost, _, pred, summary = sess.run([loss_full_model, train_step_full_model, full_model, merged],
-                                                                feed_dict={inputs_ff: gene_exp_batch,
-                                                                           inputs_cnn: ambient_seq_batch,
-                                                                           labels_: labels_batch,
-                                                                           inputs_dist: dist_batch})
+                        batch_cost, _, pred, summary = sess.run(
+                            [loss_full_model, train_step_full_model, full_model, merged],
+                            feed_dict={inputs_ff: gene_exp_batch,
+                                       inputs_cnn: ambient_seq_batch,
+                                       labels_: labels_batch,
+                                       inputs_dist: dist_batch})
                         # tf.Summary.Value.add(tag='correl', simple_value=spearmanr(pred, labels_batch))
-                        self.print_step(False, train_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch)
+                        self.print_step(False, train_writer, summary, pred, counter, gene_exp_batch, batch_cost,
+                                        labels_batch)
 
                         # VALIDATION EVAL
                         ambient_seq_batch, gene_exp_batch, dist_batch, labels_batch, _, _, _ = self.validation.next_batch(
@@ -553,23 +579,13 @@ class Model():
                         dn = sess.run(dist_attn, feed_dict={inputs_dist: dist_batch})
                         cn = sess.run(cnn_attn, feed_dict={inputs_cnn: ambient_seq_batch})
                         gn = sess.run(gene_attn, feed_dict={inputs_ff: gene_exp_batch})
-                        # print("cn\n-------\n", cn)
-                        # print(np.max(cn, axis=1))
-                        # print(np.argmax(cn, axis=1))
-                        # print("dn\n-------\n", dn)
-                        # print(np.max(dn, axis=1))
-                        # print(np.argmax(dn, axis=1))
-                        # print("gn\n-------\n", gn)
-                        # print(np.max(gn, axis=1))
-                        # print(np.argmax(gn, axis=1))
-                        # print("dist_input_argmax\n-------\n")
-                        # print(np.argmax(dist_batch, axis=1))
-                        self.print_step(False, val_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "VAL___________")
+
+                        self.print_step(False, val_writer, summary, pred, counter, gene_exp_batch, batch_cost,
+                                        labels_batch, "VAL___________")
 
                         corr = spearmanr(pred, labels_batch)
 
-                        if corr[0] > 0.6 and corr[0] > max_val_correl:
-                            # self.scatter_plot(pred, labels_batch, counter, 'val_ch3_e_blind')
+                        if corr[0] > 0.86 and corr[0] > max_val_correl:
                             if self.save_models:
                                 save_path = saver.save(sess,
                                                        "../out/ch3_e_blind/m_%s_%d_ch3_e_cor_%.2f_mae_%.2f.ckpt" % (
@@ -591,7 +607,6 @@ class Model():
                             avg_cor_prev_val = avg_cor
                             cor_queue_val = deque([])
 
-
                         # CH3 BLIND VALIDATION (same gene exp, new methylation location (sequence)):
                         ambient_seq_batch, gene_exp_batch, dist_batch, labels_batch, _, _, _ = self.validation_ch3_blind.next_batch(
                             batch_size=self.Conf.batch_size * 2)
@@ -605,10 +620,10 @@ class Model():
                                                                         inputs_dist: dist_batch})
 
                         corr = spearmanr(pred, labels_batch)
-                        self.print_step(False, validation_ch3_blind_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "CH3___________")
+                        self.print_step(False, validation_ch3_blind_writer, summary, pred, counter, gene_exp_batch,
+                                        batch_cost, labels_batch, "CH3___________")
 
-                        if corr[0] > 0.3 and corr[0] > max_ch3_blind_correl:
-                            # self.scatter_plot(pred, labels_batch, counter, 'val_ch3_blind')
+                        if corr[0] > 0.99 and corr[0] > max_ch3_blind_correl:
                             if self.save_models:
                                 save_path = saver.save(sess, "../out/ch3_blind/model_%s_%d_ch3_blind.ckpt" % (
                                     self.modelID, counter))
@@ -626,12 +641,11 @@ class Model():
                                                                         labels_: labels_batch,
                                                                         inputs_dist: dist_batch})
 
-
                         corr = spearmanr(pred, labels_batch)
-                        self.print_step(False, validation_e_blind_writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, "E___________")
+                        self.print_step(False, validation_e_blind_writer, summary, pred, counter, gene_exp_batch,
+                                        batch_cost, labels_batch, "E___________")
 
-                        if corr[0] > 0.3 and corr[0] > max_e_blind_correl:
-                            # self.scatter_plot(pred, labels_batch, counter, 'val_e_blind')
+                        if corr[0] > 0.99 and corr[0] > max_e_blind_correl:
                             if self.save_models:
                                 save_path = saver.save(sess, "../out/e_blind/model_%s_%d_e_blind.ckpt" % (
                                     self.modelID, counter))
@@ -657,64 +671,59 @@ class Model():
                         labels_batch = np.array(labels_batch).reshape((-1, 1))
                         ambient_seq_batch = np.array(ambient_seq_batch).reshape(
                             (-1, self.Conf.numSurrounding * 2, self.Conf.numBases, 1))
-                        batch_cost, _ = sess.run([loss_full_model, train_step_full_model], feed_dict={inputs_ff: gene_exp_batch,
-                                                                                inputs_cnn: ambient_seq_batch,
-                                                                                labels_: labels_batch,
-                                                                                inputs_dist: dist_batch})
+                        batch_cost, _ = sess.run([loss_full_model, train_step_full_model],
+                                                 feed_dict={inputs_ff: gene_exp_batch,
+                                                            inputs_cnn: ambient_seq_batch,
+                                                            labels_: labels_batch,
+                                                            inputs_dist: dist_batch})
                 print("Epoch: {}/{}...".format(e + 1, self.Conf.epochs))
 
-
-    def print_step(self, is_autoencoder, writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch, validation_type=''):
+    def print_step(self, is_autoencoder, writer, summary, pred, counter, gene_exp_batch, batch_cost, labels_batch,
+                   validation_type=''):
 
         if is_autoencoder:
             rand_range = np.arange(0, self.Conf.batch_size * 2)
             random_batch_samples_idx = np.random.choice(rand_range, 10)
             corr = spearmanr(pred[random_batch_samples_idx[0]], gene_exp_batch[random_batch_samples_idx[0]])
-            print(validation_type+" corr: ", corr[0], "loss", batch_cost)
+            print(validation_type + " corr: ", corr[0], "loss", batch_cost)
             if corr[0] > 0.3:
                 samples_corr = []
                 for s in random_batch_samples_idx:
                     samples_corr.append(spearmanr(pred[s], gene_exp_batch[s])[0])
                 avg_cor_sampled = np.mean(samples_corr)
                 if avg_cor_sampled > 0.3:
-                    print("autoencoder avg passes %.2f" %avg_cor_sampled)
-                    # self.scatter_plot(pred[s], gene_exp_batch[s], counter,
-                    #                   validation_type)
-                    # save_path = saver.save(sess, "../out/autoencoder.ckpt")
+                    print("autoencoder avg passes %.2f" % avg_cor_sampled)
 
         else:
             corr = spearmanr(pred, labels_batch)
             if validation_type != '':
-                print(validation_type+" corr: ", corr[0], "loss", batch_cost)
+                print(validation_type + " corr: ", corr[0], "loss", batch_cost)
             extSummary = tf.Summary()
             extSummary.value.add(tag='correl', simple_value=corr[0])
             extSummary.value.add(tag='correl_pval', simple_value=corr[1])
             writer.add_summary(extSummary, counter)
             writer.add_summary(summary, counter)
 
-
-    #TODO: transfer to DatasetCombined
     def dense_to_one_hot(self, labels_dense, num_classes, neighbourLossAlpha=None, disregardCenter=False):
-       """Convert class labels from scalars to one-hot vectors."""
-       num_labels = labels_dense.shape[0]
-       if neighbourLossAlpha:
-           num_classes += 2 #for padding, one
-           index_offset = np.arange(num_labels) * num_classes
-           labels_one_hot = np.zeros((num_labels, num_classes))
-           labels_one_hot.flat[index_offset + labels_dense.ravel()+1] = 1 #+1 due to padding induced by numclasses+=2 (we want padding on two ends and without this it starts with 0), #0 becomes 1 and 9 becomes 10 out of ix 11
-           # adding alpha before actual label and after
-           labels_one_hot.flat[index_offset + labels_dense.ravel()+2] = neighbourLossAlpha
-           labels_one_hot.flat[index_offset + labels_dense.ravel()] = neighbourLossAlpha
-           # shrinking it back to real num_class (ignoring edges of each sub array)
-           labels_one_hot = labels_one_hot[:, 1:-1]
-       else:
-          index_offset = np.arange(num_labels) * num_classes
-          labels_one_hot = np.zeros((num_labels, num_classes))
-          labels_one_hot.flat[index_offset + labels_dense.ravel()] = 1
-        # if disregardCenter:
+        """Convert class labels from scalars to one-hot vectors."""
+        num_labels = labels_dense.shape[0]
+        if neighbourLossAlpha:
+            num_classes += 2  # for padding, one
+            index_offset = np.arange(num_labels) * num_classes
+            labels_one_hot = np.zeros((num_labels, num_classes))
+            labels_one_hot.flat[
+                index_offset + labels_dense.ravel() + 1] = 1  # +1 due to padding induced by numclasses+=2 (we want padding on two ends and without this it starts with 0), #0 becomes 1 and 9 becomes 10 out of ix 11
+            # adding alpha before actual label and after
+            labels_one_hot.flat[index_offset + labels_dense.ravel() + 2] = neighbourLossAlpha
+            labels_one_hot.flat[index_offset + labels_dense.ravel()] = neighbourLossAlpha
+            # shrinking it back to real num_class (ignoring edges of each sub array)
+            labels_one_hot = labels_one_hot[:, 1:-1]
+        else:
+            index_offset = np.arange(num_labels) * num_classes
+            labels_one_hot = np.zeros((num_labels, num_classes))
+            labels_one_hot.flat[index_offset + labels_dense.ravel()] = 1
 
-       return labels_one_hot
-
+        return labels_one_hot
 
     def scatter_plot(self, x, y, counter, name):
         plt.scatter(x, y, c='blue', alpha=0.1, s=20)
@@ -724,4 +733,3 @@ class Model():
         plt.xlabel('Predicted methylation')
         plt.ylabel('Actual methylation')
         plt.close()
-
