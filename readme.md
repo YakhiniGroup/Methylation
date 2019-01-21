@@ -10,7 +10,7 @@ With this program you can:
 ## Getting Started 
 
 Below you will find explanations, including examples, for each of the options above. 
-For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out/ch3_e_blind folder (after unzipping, place all ".ckpt" files directly under this folder), as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
+For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out/ch3_e_blind folder (after unzipping, place all ".ckpt" files **directly** under this folder, e.g. out/ch3_e_blind/model_1.ckpt... etc.), as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
 
 ### Prerequisites 
 
@@ -36,7 +36,7 @@ Before running:
 
 * The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
 * Depending on your system or interpreter, you may need to mark the src directory as Sources Root, or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
-* Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (after unzipping, place all ".ckpt" files directly under this folder). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
+* Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (after unzipping, place all ".ckpt" files **directly** under this folder, e.g. out/ch3_e_blind/model_1.ckpt...  etc.). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
 
 
 ### Example
