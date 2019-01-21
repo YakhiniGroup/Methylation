@@ -10,7 +10,7 @@ With this program you can:
 ## Getting Started 
 
 Below you will find explanations, including examples, for each of the options above. 
-For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out folder, as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
+For prediction purposes, as well as for training with one of our pre-trained models, you will need the trained weights to reside in the out/ch3_e_blind folder (after unzipping, place all ".ckpt" files directly under this folder), as described below. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB).   
 
 ### Prerequisites 
 
@@ -19,6 +19,8 @@ Requires:
 Python 3.5.6 (or 3.5 should do). 
 
 Pandas (pip3 install pandas)
+
+sklearn (pip3 install scikit-learn)
 
 Tensorflow 1.4+ (pip3 install tensorflow)
 
@@ -34,7 +36,7 @@ Before running:
 
 * The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
 * Depending on your system or interpreter, you may need to mark the src directory as Sources Root, or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
-* Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights. You can download them directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
+* Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (after unzipping, place all ".ckpt" files directly under this folder). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
 
 
 ### Example
@@ -62,7 +64,7 @@ Before running:
 
 * The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
 * Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
-* Make sure to have the following driectories in place:
+* Unless you are running the default sample run, you need to make sure that the following directories are in place:
     * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, it should be placed under:  ch3_e_blind
     * A logs directory.
 
