@@ -34,8 +34,8 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 
 Before running:
 
-* The project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
-* Depending on your system or interpreter, you may need to mark the src directory as Sources Root, or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
+* If running in terminal, the project assumes that you are running prediction.py from within the src folder (all paths are relative to src), so cd to src first.
+* If using an interpreter, you may need to mark the src directory as Sources Root (on PyCharm: right-click src folder -> Mark Directory As -> Source Root) or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
 * Make sure to have an out directory that contains a sub-folder named: "ch3_e_blind" in which you should place the model's weights (after unzipping, place all ".ckpt" files **directly** under this folder, e.g. out/ch3_e_blind/model_1.ckpt...  etc.). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
 
 
@@ -62,8 +62,8 @@ Note that you can use preprocessor.py and distances.py to help you prepare your 
 
 Before running:
 
-* The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
-* Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
+* If running in terminal, the project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
+* If using an interpreter, you may need to mark the src directory as Sources Root (on PyCharm: right-click src folder -> Mark Directory As -> Source Root) or add "src." to the local import statements (e.g. "import conf" becomes "import src.conf").
 * Unless you are running the default sample run (load_model_ID = 0), you need to make sure that the following directories are in place:
     * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, its .ckpt files should be placed under:  ch3_e_blind (after unzipping, place all ".ckpt" files **directly** under this folder, e.g. out/ch3_e_blind/model_1.ckpt...  etc.). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
     * A logs directory.
