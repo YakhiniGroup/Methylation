@@ -65,7 +65,7 @@ Before running:
 * The project assumes that you are running run.py from within the src folder (all paths are relative to src), so cd to src first.
 * Depending on your system or interpreter, you may need to remove the "src." from the import statements (e.g. "import src.conf" becomes "import conf").
 * Unless you are running the default sample run, you need to make sure that the following directories are in place:
-    * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, it should be placed under:  ch3_e_blind
+    * An out directory that contains the sub-folders: "ch3_e_blind", "ch3_blind", "e_blind", "plots", "postTrainingAnalysis". If using a pre-trained model, its .ckpt files should be placed under:  ch3_e_blind (after unzipping, place all ".ckpt" files **directly** under this folder, e.g. out/ch3_e_blind/model_1.ckpt...  etc.). You can download the weights directly from [this link](https://drive.google.com/open?id=17UGNCgK6yfiZJeHJrDOolgFa2rnz4ICN) (note that the files are ~2-4GB). 
     * A logs directory.
 
 
