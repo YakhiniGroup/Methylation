@@ -29,7 +29,7 @@ Tensorflow 1.4+ (pip3 install tensorflow)
 
 To predict methylation levels, use predict.py. Inside, you will find a designated area with a few settings that enable you to specify the input files (such as the gene-expression measurements file). 
 For your convenience, we supplied sample files in the res folder (NOTE - these files contain little data and are for demonstration purposes only). You should adhere to the format according to these files. Below is an example of the settings you would have to modify. This is also the default in predict.py.
-The load_model_ID parameter corresponds to which of the models from the paper you would like to use for the prediction (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
+The load_model_ID parameter corresponds to which of the models from the paper you would like to use for the prediction (see paper for details, or if you're not sure - you're welcome to contact us) 
 Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
 Before running:
@@ -57,7 +57,7 @@ If you want to train from scratch - use load_model_ID = 0. This is also further 
 Note that there is no need to split your data into train/val/test in advance - this will be done automatically and randomly when first running the model (this is controlled in dataset.py).  
 For your convenience, we supplied sample files in the res folder for format only (to keep them small, they do not contain many cpgs or samples, so don't expect this to train very well). You should adhere to the format according to these files. To supply your file names, as well as other settings, use conf.py. 
 Below is an example of what you would have to supply, both in run.py and in conf.py.
-The load_model_ID parameter corresponds to which of the models from the paper you would like to use as pre-training (see paper for details, or if you're not sure - please contact us - we will gladly assist!) 
+The load_model_ID parameter corresponds to which of the models from the paper you would like to use as pre-training (see paper for details, or if you're not sure - you're welcome to contact us) 
 Note that you can use preprocessor.py and distances.py to help you prepare your data.
 
 Before running:
