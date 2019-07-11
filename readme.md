@@ -103,4 +103,5 @@ If you need help, or have any questions, please feel free to contact us at: levy
 * **Vessela N. Kristensen**
 * **Zohar Yakhini**
 
-Please cite our paper if you use this project.
+Please cite our paper if you use this project:
+https://link.springer.com/chapter/10.1007/978-3-030-18174-1_13
